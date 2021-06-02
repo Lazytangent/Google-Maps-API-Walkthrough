@@ -29,4 +29,15 @@ router.delete('', (_req, res) => {
   return res.json({ message: 'success' });
 })
 
+router.get('', restoreUser, (req, res) => {
+  const { user } = req;
+  if (user) {
+    res.json({
+      user: user.toSafeObject()
+    });
+  } else {
+    res.json({});
+  }
+});
+
 module.exports = router;
