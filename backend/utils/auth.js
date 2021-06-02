@@ -23,7 +23,7 @@ const setTokenCookie = (res, user) => {
 
 // Middleware function
 const restoreUser = (req, res, next) => {
-  const { token } = req.cookiets;
+  const { token } = req.cookies;
   return jwt.verify(token, secret, null, async (err, jwtPayload) => {
     if (err) {
       return next();
@@ -43,9 +43,10 @@ const restoreUser = (req, res, next) => {
   });
 };
 
+// Middleware function
 const requireAuth = [
   restoreUser,
-  function(req, res, next) {
+  function(req, _res, next) {
     if (req.user) return next();
 
     const err = new Error('Unauthorized');
