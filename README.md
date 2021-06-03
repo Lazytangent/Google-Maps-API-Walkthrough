@@ -145,4 +145,98 @@ module.exports = {
 };
 ```
 
-Now, we'll create
+Now, we'll create a backend API route to send our API key to the frontend where
+it will actually be used. The whole point of putting our key in the backend just
+to send it through a route to the frontend is so that we can add middleware to
+prevent bad actors from using our key.
+
+In your `backend/routes/api` folder, make a new file `maps.js`, and in your
+`backend/routes/api/index.js` file, connect what will be the maps router to the
+rest of your backend application.
+
+```js
+// backend/routes/api/index.js
+
+// Other imports
+const mapsRouter = require('./maps');
+
+router.use('/maps', mapsRouter);
+
+// Other router.use statements and
+// Export statement
+```
+
+In your `backend/routes/api/maps.js` file, instantiate a new router, export it
+at the bottom of the file, and start the framework of a new route for `POST
+/api/maps/key`. We're using a POST route because this gives you the option to
+send a public key to the backend to encrypt the API key so that it doesn't get
+taken in transit from the backend to the frontend. For our example, we won't go
+through all of that. The actual endpoint doesn't have to be exactly like the one
+in this example, this was just chosen to be specific about what the endpoint
+should return. Your code should look something like:
+
+```js
+// backend/routes/api/maps.js
+
+const router = require('express').Router();
+const { googleMapsAPIKey } = require('../../config');
+
+router.post('/key', (req, res) => {
+  res.json({ googleMapsAPIKey });
+});
+
+module.exports = router;
+```
+
+#### Frontend
+
+In your frontend, install `@react-google-maps/api`. We'll be using this package
+to utilize Google Maps in our app. In this example, we'll be using Redux to make
+our API key available across our app.
+
+Start by creating a new slice of state. In your `frontend/src/store` folder,
+create a new file `maps.js` to store our maps slice of state. In that file, make
+a new reducer with a default case and export it as the default export. In your
+`frontend/src/store/index.js` file, import that new `mapsReducer` and insert it
+into the `rootReducer` as a new slice of state. Upon refreshing your browser,
+you should be able to see the `maps` slice of state in your Redux DevTools.
+
+Going back to the `frontend/src/store/maps.js` file, create an action creator
+and its corresponding type and case in the reducer. Then, create a thunk creator
+that will access our `POST /api/maps/key` route to get the API key from the
+backend.
+
+Your code will end up looking something like this:
+
+```js
+// frontend/src/store/maps.js
+import { csrfFetch } from './csrf';
+
+const LOAD_API_KEY = 'maps/LOAD_API_KEY';
+
+const loadApiKey = (key) => ({
+  type: LOAD_API_KEY,
+  payload: key,
+});
+
+export const getKey = () => async (dispatch) => {
+  const res = await csrfFetch('/api/maps/key', {
+    method: 'POST',
+  });
+  const data = await res.json();
+  dispatch(loadApiKey(data.googleMapsAPIKey));
+};
+
+const initialState = { key: null };
+
+const mapsReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case LOAD_API_KEY:
+      return { key: action.payload };
+    default:
+      return state;
+  }
+};
+
+export default mapsReducer;
+```
