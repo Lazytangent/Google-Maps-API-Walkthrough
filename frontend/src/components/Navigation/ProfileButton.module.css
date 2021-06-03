@@ -1,3 +1,8 @@
-.div {
+.button {
+  padding: 0.35rem;
   font-size: 1rem;
+}
+
+.logoutButton {
+  padding: 0.35rem;
 }
