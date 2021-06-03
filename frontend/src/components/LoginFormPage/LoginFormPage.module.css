@@ -1,0 +1,36 @@
+.form {
+  margin: 0 auto;
+  width: fit-content;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  padding: 0.5rem;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 0.1rem solid black;
+}
+
+.button {
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 0.1rem solid black;
+}
+
+.errors {
+  list-style: none;
+  color: red;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: 600;
+}
