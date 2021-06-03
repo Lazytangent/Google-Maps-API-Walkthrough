@@ -1,10 +1,11 @@
 const router = require('express').Router();
 const asyncHandler = require('express-async-handler');
 
+const { validateLogin } = require('./sessionValidators');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
-router.post('', asyncHandler(async (req, res, next) => {
+router.post('', validateLogin, asyncHandler(async (req, res, next) => {
   const { credential, password } = req.body;
 
   const user = await User.login({ credential, password });
