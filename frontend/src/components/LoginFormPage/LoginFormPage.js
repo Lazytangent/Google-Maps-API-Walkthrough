@@ -12,7 +12,6 @@ const LoginFormPage = () => {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
-  console.log(errors);
 
   const submitHandler = async (e) => {
     e.preventDefault();
