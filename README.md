@@ -240,3 +240,103 @@ const mapsReducer = (state = initialState, action) => {
 
 export default mapsReducer;
 ```
+
+Now, we can move our focus to creating a component that will house our maps.
+For this walkthrough, we're going to create a Maps component. You'll find that
+component in `frontend/src/components/Maps/Maps.js`. It'll end up looking
+something like
+
+```js
+import React, { useState, useCallback } from 'react';
+import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
+
+const containerStyle = {
+  width: '400px',
+  height: '400px',
+};
+
+const center = {
+  lat: -3.745,
+  lng: -38.523,
+};
+
+const Maps = ({ apiKey }) => {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-maps-script',
+    googleMapsAPIKey: apiKey,
+  });
+
+  const [map, setMap] = useState(null);
+
+  const onLoad = useCallback((map) => {
+    const bounds = new window.google.maps.LatLngBounds();
+    map.fitBounds(bounds);
+    setMap(map);
+  }, []);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
+
+  return (
+    <>
+      {isLoaded && (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={10}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+        />
+      )}
+    </>
+  );
+};
+
+export default React.memo(Maps);
+```
+
+You'll notice that we didn't dispatch our thunk in this component, and that's to
+avoid an extra render when we haven't received the API key from the backend yet.
+We'll be dispatching our thunk in `frontend/src/components/Maps/index.js`.
+
+```js
+// frontend/src/components/Maps/index.js
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getKey } from '../../store/maps';
+import Maps from './Maps';
+
+const MapContainer = () => {
+  const key = useSelector((state) => state.maps.key);
+  const dispatch = useDispatch();
+
+  if (!key) {
+    return null;
+  }
+
+  return (
+    <Maps apiKey={key} />
+  );
+};
+
+export default MapContainer;
+```
+
+### Add billing info
+
+Finally, in order for our Maps API to work without restrictions, we'll need to
+add billing info to our Google account. To do this, open the side navigation
+menu again and go to `Billing` to add your credit card info.
+
+## Final thoughts
+
+You can access Google's official docs of the [Maps JavaScript
+API][maps-javascript-api] for more info.
+
+You can also find out more about the [React Google Maps
+API][react-google-maps-api] to find out more ways to use Google Maps in your
+React app.
+
+[maps-javascript-api]: https://developers.google.com/maps/documentation/javascript/get-api-key
+[react-google-maps-api]: https://www.npmjs.com/package/@react-google-maps/api
