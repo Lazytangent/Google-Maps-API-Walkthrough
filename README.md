@@ -79,3 +79,70 @@ what it has access to.
 [maps-api-4]: https://assets.aaonline.io/fullstack/react/projects/bench_bnb/maps_api_4.png
 
 ### Add API Key to our App
+
+**Quick Note**: It's important to take this upcoming section very seriously!
+There have been multiple anecdotes from students who accidentally pushed API
+keys to a public GitHub repo. Those keys were then scraped by bad actors who
+racked up tens of thousands of dollars in charges using those keys.
+
+With that in mind, let's add our API key to our project!
+
+Any time we add an API key to our project, we want to take precautions to
+prevent bad actors from stealing and misusing our keys. In the case of our Maps
+API key, because billing is calculated per map load, bad actors might want to
+steal your key so that they can load up maps on their own projects.
+
+Because the Maps API key is loaded in the frontend in our HTML, there's actually
+not much we can do to prevent the key from being publicly accessible if our web
+app is deployed to production. Since you'll most likely be deploying your app
+(for example, using Heroku), then it's highly recommended that you protect your
+publicly accessible API key by restricting the websites that can use your key.
+
+![How to restrict API key to specific websites][maps-api-5]
+
+To prevent our API key from being pushed to GitHub while still being able to
+conveniently use the key locally, we have a couple of options.
+
+The first option is to use React's built-in system to build in environment
+variables on build. This does expose the environment variable to bad actors, so
+it's best that you restrict where your API key can be used from once you push
+you app to production.
+
+The next option, which we'll be using for this walkthrough is to make the API
+key an environment variable available in your backend, and to fetch a custom API
+route to get that key to the frontend. This way, you can use Google's system to
+restrict where your API key can be used from and have backend validations to
+make sure the people who are trying to fetch for your API key are actually using
+your application.
+
+#### Backend
+
+In the root of your backend, add your Google Maps API key to your `.env` file.
+It should now look something like
+
+```plaintext
+PORT=5000
+DB_USERNAME=«db_username»
+DB_PASSWORD=«db_password»
+DB_DATABASE=«db_database»
+DB_HOST=localhost
+JWT_SECRET=«secret»
+JWT_EXPIRES_IN=604800
+MAPS_API_KEY=«maps_api_key»
+```
+
+Next, let's configure our `config/index.js` file to match what we've been doing
+with our environment variables throughout the Authenticate Me walkthrough. We'll
+add a key of `googleMapsAPIKey` to the exported object with a value of the
+environment variable we just added.
+
+It should look something like this:
+
+```js
+module.exports = {
+  // All other keys from Authenticate Me set up
+  googleMapsAPIKey: process.env.MAPS_API_KEY,
+};
+```
+
+Now, we'll create
