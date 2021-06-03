@@ -1,17 +1,22 @@
 const router = require('express').Router();
-const asyncHandler = require('express-async-handler');
 
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User } = require('../../db/models');
+/** Imports for testing routes */
+// const asyncHandler = require('express-async-handler');
+// const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+// const { User } = require('../../db/models');
+
 const sessionRouter = require('./session');
 const usersRouter = require('./users');
 
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
 
-router.post('/test', (req, res) => {
-  res.json({ requestBody: req.body });
-});
+/**
+ * Route for testing backend then csrfFetch from frontend
+ */
+// router.post('/test', (req, res) => {
+//   res.json({ requestBody: req.body });
+// });
 
 /** Routes for testing user auth */
 // router.get('/set-token-cookie', asyncHandler(async (_req, res) => {
