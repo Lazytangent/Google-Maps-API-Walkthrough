@@ -29,6 +29,7 @@ const Navigation = ({ isLoaded }) => {
         <li className={styles.li}>
           <NavLink exact to="/" className={styles.navLink}>Home</NavLink>
           {isLoaded && sessionLinks}
+          <NavLink to="/maps" className={styles.navLink}>Maps</NavLink>
         </li>
       </ul>
     </nav>

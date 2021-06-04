@@ -250,7 +250,7 @@ something like
 
 ```js
 // frontend/src/components/Maps/Maps.js
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -259,27 +259,15 @@ const containerStyle = {
 };
 
 const center = {
-  lat: -3.745,
-  lng: -38.523,
+  lat: 38.9072,
+  lng: 77.0369,
 };
 
 const Maps = ({ apiKey }) => {
   const { isLoaded } = useJsApiLoader({
-    id: 'google-maps-script',
+    id: 'google-map-script',
     googleMapsAPIKey: apiKey,
   });
-
-  const [map, setMap] = useState(null);
-
-  const onLoad = useCallback((map) => {
-    const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
-    setMap(map);
-  }, []);
-
-  const onUnmount = useCallback(() => {
-    setMap(null);
-  }, []);
 
   return (
     <>
@@ -288,8 +276,6 @@ const Maps = ({ apiKey }) => {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
         />
       )}
     </>
@@ -305,6 +291,7 @@ We'll be dispatching our thunk in `frontend/src/components/Maps/index.js`.
 
 ```js
 // frontend/src/components/Maps/index.js
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getKey } from '../../store/maps';
@@ -313,6 +300,12 @@ import Maps from './Maps';
 const MapContainer = () => {
   const key = useSelector((state) => state.maps.key);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!key) {
+      dispatch(getKey());
+    }
+  }, [dispatch, key]);
 
   if (!key) {
     return null;
