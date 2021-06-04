@@ -139,6 +139,7 @@ environment variable we just added.
 It should look something like this:
 
 ```js
+// backend/config/index.js
 module.exports = {
   // All other keys from Authenticate Me set up
   googleMapsAPIKey: process.env.MAPS_API_KEY,
@@ -156,7 +157,6 @@ rest of your backend application.
 
 ```js
 // backend/routes/api/index.js
-
 // Other imports
 const mapsRouter = require('./maps');
 
@@ -179,7 +179,6 @@ code should look something like:
 
 ```js
 // backend/routes/api/maps.js
-
 const router = require('express').Router();
 const { googleMapsAPIKey } = require('../../config');
 
