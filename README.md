@@ -53,6 +53,9 @@ Search for and select `Maps JavaScript API`. Now, `Enable` this API for your
 project. (Again, be sure you have selected your newly created project when
 enabling this API.)
 
+You can also take this opportunity to sign up for other Google Cloud Services to
+use in your app.
+
 ![Enable JavaScript API][maps-api-3]
 
 [maps-api-3]: https://assets.aaonline.io/fullstack/react/projects/bench_bnb/maps_api_3.png
