@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import { restoreUser } from './store/session';
 import SignupFormPage from './components/SignupFormPage';
 import Navigation from './components/Navigation';
+import MapContainer from './components/Maps';
 
 function App() {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ function App() {
           <Switch>
             <Route path="/signup">
               <SignupFormPage />
+            </Route>
+            <Route path="/maps">
+              <MapContainer />
             </Route>
           </Switch>
         </>

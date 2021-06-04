@@ -249,6 +249,7 @@ component in `frontend/src/components/Maps/Maps.js`. It'll end up looking
 something like
 
 ```js
+// frontend/src/components/Maps/Maps.js
 import React, { useState, useCallback } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
