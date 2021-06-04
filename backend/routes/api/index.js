@@ -7,9 +7,11 @@ const router = require('express').Router();
 
 const sessionRouter = require('./session');
 const usersRouter = require('./users');
+const mapsRouter = require('./maps');
 
 router.use('/session', sessionRouter);
 router.use('/users', usersRouter);
+router.use('/maps', mapsRouter);
 
 /**
  * Route for testing backend then csrfFetch from frontend
