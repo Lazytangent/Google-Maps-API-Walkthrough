@@ -115,6 +115,8 @@ restrict where your API key can be used from and have backend validations to
 make sure the people who are trying to fetch for your API key are actually using
 your application.
 
+[maps-api-5]: https://assets.aaonline.io/fullstack/react/projects/bench_bnb/maps_api_5.png
+
 #### Backend
 
 In the root of your backend, add your Google Maps API key to your `.env` file.
