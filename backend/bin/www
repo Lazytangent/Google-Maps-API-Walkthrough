@@ -8,10 +8,12 @@ const db = require('../db/models');
 db.sequelize
   .authenticate()
   .then(() => {
+    // Testing to see whether this works
     console.log('Database connection success! Sequelize is ready to use...');
     app.listen(port, () => console.log(`Listening on port ${port}...`));
   })
   .catch((err) => {
+    // It didn't
     console.log('Database connection failure.');
     console.error(err);
   });
