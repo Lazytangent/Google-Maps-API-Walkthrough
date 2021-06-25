@@ -270,7 +270,7 @@ const center = {
 const Maps = ({ apiKey }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsAPIKey: apiKey,
+    googleMapsApiKey: apiKey,
   });
 
   return (
